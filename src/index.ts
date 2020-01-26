@@ -15,7 +15,7 @@ createConnection({
   synchronize: true,
   logging: false,
 })
-  .then(async connection => {
+  .then(async () => {
     console.log('success!!!!');
 
     // Construct a schema, using GraphQL schema language
