@@ -6,7 +6,7 @@ export default class Remote {
   id!: number;
 
   @Column('uuid')
-  companyId!: string;
+  company_id!: string;
 
   @Column('boolean')
   is_remote!: boolean;

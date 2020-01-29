@@ -1,4 +1,6 @@
 node_modules
 dist
 ormconfig.json
+ormconfig.prod.json
 .env
+.env_back

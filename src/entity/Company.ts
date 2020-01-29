@@ -11,7 +11,7 @@ import Remote from './Remote';
 @Entity()
 export default class Company {
   @PrimaryGeneratedColumn('uuid')
-  companyId!: string;
+  company_id!: string;
 
   @Column({
     length: 50,
