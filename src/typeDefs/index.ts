@@ -2,20 +2,20 @@ import { gql } from 'apollo-server-express';
 
 const typedDefs = gql`
   type Flexible {
-    companyId: String
-    isFlexible: Boolean
-    ruls: String
+    company_id: String
+    is_flexible: Boolean
+    rule: String
   }
 
   type Remote {
-    companyId: String
-    isRemote: Boolean
+    company_id: String
+    is_remote: Boolean
     rule: String
   }
 
   type Company {
-    companyId: String
-    company: String
+    company_id: String
+    company_name: String
     description: String
     homepage: String
     location: String
@@ -27,10 +27,28 @@ const typedDefs = gql`
   type Query {
     hello: String
     companies: [Company]!
-    company: Company
+    company(company_id: String): Company
   }
   type Mutation {
-    addJob(company: String, description: String): Company
+    addCompany(
+      company_name: String
+      description: String
+      homepage: String
+      location: String
+    ): Company
+    updateCompany(
+      company_id: String
+      company_name: String
+      description: String
+      homepage: String
+      location: String
+    ): Company
+    updateFlexible(
+      company_id: String
+      is_flexible: Boolean
+      rule: String
+    ): Flexible
+    updateRemote(company_id: String, is_remote: Boolean, rule: String): Remote
   }
 `;
 

@@ -16,7 +16,7 @@ export default class Company {
   @Column({
     length: 50,
   })
-  company!: string;
+  company_name!: string;
 
   @Column('text')
   description!: string;
@@ -28,9 +28,6 @@ export default class Company {
 
   @Column()
   location!: string;
-
-  @Column()
-  logo!: string;
 
   @OneToOne(type => Flexible)
   @JoinColumn()
