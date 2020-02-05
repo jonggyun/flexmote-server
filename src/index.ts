@@ -7,6 +7,8 @@ import 'dotenv/config';
 import typeDefs from './typeDefs';
 import resolvers from './resolvers';
 
+import indexRouter from './routes';
+
 createConnection({
   type: process.env.TYPEORM_TYPE as any,
   host: process.env.TYPEORM_HOST,
@@ -24,6 +26,8 @@ createConnection({
       resolvers,
     });
     const app = express();
+
+    app.use('/', indexRouter);
 
     server.applyMiddleware({ app });
     app.listen({ port: 4000 }, () =>

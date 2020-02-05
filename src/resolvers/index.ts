@@ -1,12 +1,5 @@
-import company from './company';
+import { mergeResolvers } from 'merge-graphql-schemas';
 
-const resolvers = {
-  Query: {
-    ...company.Query,
-  },
-  Mutation: {
-    ...company.Mutation,
-  },
-};
+import companyResolver from './company';
 
-export default resolvers;
+export default mergeResolvers([companyResolver]);
