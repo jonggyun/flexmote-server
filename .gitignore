@@ -1,6 +1,12 @@
 node_modules
 dist
+
+# type orm
 ormconfig.json
 ormconfig.prod.json
+
 .env
 .env_back
+
+# docker
+docker-compose.yml

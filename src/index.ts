@@ -9,6 +9,8 @@ import resolvers from './resolvers';
 
 import indexRouter from './routes';
 
+import NewsAPI from './datasources/news';
+
 createConnection({
   type: process.env.TYPEORM_TYPE as any,
   host: process.env.TYPEORM_HOST,
@@ -24,6 +26,9 @@ createConnection({
     const server = new ApolloServer({
       typeDefs,
       resolvers,
+      dataSources: () => ({
+        newsAPI: new NewsAPI(),
+      }),
     });
     const app = express();
 

@@ -1,6 +1,6 @@
 import { gql } from 'apollo-server-express';
 
-const typedDefs = gql`
+const typeDefs = gql`
   type Flexible {
     company_id: String
     is_flexible: Boolean
@@ -53,4 +53,4 @@ const typedDefs = gql`
   }
 `;
 
-export default typedDefs;
+export default typeDefs;
