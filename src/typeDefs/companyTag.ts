@@ -16,7 +16,8 @@ const typeDefs = gql`
   }
 
   type Mutation {
-    addTag(company_id: String): CompanyTag
+    addTag(company_id: String, tags: [String]): CompanyTag
+    updateTag(company_id: String, tags: [String]): CompanyTag
   }
 `;
 
