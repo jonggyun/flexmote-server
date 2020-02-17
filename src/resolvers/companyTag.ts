@@ -41,18 +41,24 @@ const addTag = ({
 
 export default {
   Query: {
-    getTags: async () =>
+    getCompanyTags: async (_: any, args: { company_id: string }) =>
       await getRepository(CompanyTag).find({
-        where: { company_id: '8da897b6-3c1d-4b9a-86a6-350f02d85498' },
+        where: { company_id: args.company_id },
       }),
   },
   Mutation: {
-    addTag: async (_: any, args: { company_id: string; tags: string[] }) => {
+    addCompanyTag: async (
+      _: any,
+      args: { company_id: string; tags: string[] },
+    ) => {
       const company_id = args.company_id;
       const tags = args.tags;
       await addTag({ company_id, tags });
     },
-    updateTag: async (_: any, args: { company_id: string; tags: string[] }) => {
+    updateCompanyTag: async (
+      _: any,
+      args: { company_id: string; tags: string[] },
+    ) => {
       const company_id = args.company_id;
       const tags = args.tags;
 

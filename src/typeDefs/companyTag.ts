@@ -12,12 +12,12 @@ const typeDefs = gql`
   }
 
   type Query {
-    getTags(company_id: String): CompanyTag
+    getCompanyTags(company_id: String): CompanyTag
   }
 
   type Mutation {
-    addTag(company_id: String, tags: [String]): CompanyTag
-    updateTag(company_id: String, tags: [String]): CompanyTag
+    addCompanyTag(company_id: String, tags: [String]): CompanyTag
+    updateCompanyTag(company_id: String, tags: [String]): CompanyTag
   }
 `;
 
