@@ -21,3 +21,15 @@ export interface RemoteProps {
   is_remote: boolean;
   rule: string;
 }
+
+export interface CommentProps {
+  comment_id: string;
+  company_id: string;
+  user_id: string;
+  username: string;
+  title: string;
+  content: string;
+  rating: number;
+  created_at: string;
+  updated_at: string;
+}
