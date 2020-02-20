@@ -29,5 +29,8 @@ export default {
 
       await getRepository(Comment).insert(comment);
     },
+    removeComment: async (_: any, { comment_id }: { comment_id: string }) => {
+      await getRepository(Comment).delete({ comment_id });
+    },
   },
 };

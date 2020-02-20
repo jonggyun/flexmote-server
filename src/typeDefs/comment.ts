@@ -26,6 +26,7 @@ const typeDefs = gql`
       content: String
       rating: Int
     ): Comment
+    removeComment(comment_id: String): Comment
   }
 
   scalar Date
