@@ -1,8 +1,9 @@
 import express from 'express';
-import { getGithubCallback } from './socialController';
+import { redirectGoogleLogin, callbackGoogleLogin } from './socialController';
 
 const router = express.Router();
 
-router.get('/github/callback', getGithubCallback);
+router.get('/redirect/google', redirectGoogleLogin);
+router.get('/callback/google', callbackGoogleLogin);
 
 export default router;
