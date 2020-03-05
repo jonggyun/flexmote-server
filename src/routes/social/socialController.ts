@@ -36,10 +36,15 @@ export const callbackGoogleLogin = async (req: Request, res: Response) => {
     );
 
     const { tokens } = await oauth2Client.getToken(code);
+    // eslint-disable-next-line @typescript-eslint/camelcase
+    const { access_token, id_token } = tokens;
     oauth2Client.setCredentials(tokens);
-    res.status(200).json({
-      tokens,
-    });
+
+    res.cookie('access_token', access_token);
+    res.cookie('id_token', id_token);
+    res.redirect(
+      process.env.NODE_ENV === 'development' ? 'http://localhost:3000' : '',
+    );
   } catch (err) {
     console.log('err', err);
   }

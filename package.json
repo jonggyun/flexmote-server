@@ -5,7 +5,7 @@
   "author": "JongGyun Park",
   "license": "MIT",
   "scripts": {
-    "start": "nodemon --exec 'ts-node' src/index.ts",
+    "start": "NODE_ENV=development nodemon --exec 'ts-node' src/index.ts",
     "build": "rm -rf dist/**.* && tsc"
   },
   "dependencies": {
