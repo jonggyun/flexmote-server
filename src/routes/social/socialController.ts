@@ -6,8 +6,8 @@ import axios from 'axios';
 export const redirectGoogleLogin = async (req: Request, res: Response) => {
   try {
     const oauth2Client = new google.auth.OAuth2(
-      process.env.OAUTH_GOOGLE_CLINET_ID,
-      process.env.OAUTH_GOOGLE_CLINET_SECRET,
+      process.env.OAUTH_GOOGLE_CLIENT_ID,
+      process.env.OAUTH_GOOGLE_CLIENT_SECRET,
       process.env.OAUTH_GOOGLE_REDIRECT_URL,
     );
     // generate a url that asks permissions for Blogger and Google Calendar scopes
@@ -38,12 +38,18 @@ export const callbackGoogleLogin = async (req: Request, res: Response) => {
     );
 
     const { tokens } = await oauth2Client.getToken(code);
-    // eslint-disable-next-line @typescript-eslint/camelcase
     const { access_token, id_token } = tokens;
+
+    const ticket = await oauth2Client.verifyIdToken({
+      idToken: id_token || '',
+      audience: process.env.OAUTH_GOOGLE_CLIENT_ID || '',
+    });
+    const userId = ticket.getPayload()?.email;
     oauth2Client.setCredentials(tokens);
 
     res.cookie('access_token', access_token);
     res.cookie('id_token', id_token);
+    res.cookie('user_id', userId);
     res.redirect(
       process.env.NODE_ENV === 'development' ? 'http://localhost:3000' : '',
     );
@@ -56,7 +62,7 @@ export const redirectGithubLogin = (req: Request, res: Response) => {
   try {
     const clientId = process.env.OAUTH_GITHUB_CLIENT_ID;
     const redirectUri = process.env.OAUTH_GITHUB_REDIRECT_URL;
-    const githubOauthUrl = `https://github.com/login/oauth/authorize?client_id=${clientId}&redirect_url${redirectUri}`;
+    const githubOauthUrl = `https://github.com/login/oauth/authorize?client_id=${clientId}&redirect_url=${redirectUri}&scope=user:email`;
     res.redirect(githubOauthUrl);
   } catch (err) {
     console.log('err', err);
@@ -66,7 +72,9 @@ export const redirectGithubLogin = (req: Request, res: Response) => {
 export const callbackGithubLogin = async (req: Request, res: Response) => {
   try {
     const { code } = req.query;
-    const { data } = await axios.post(
+    const {
+      data: { access_token },
+    } = await axios.post(
       'https://github.com/login/oauth/access_token',
       {
         client_id: process.env.OAUTH_GITHUB_CLIENT_ID,
@@ -79,7 +87,15 @@ export const callbackGithubLogin = async (req: Request, res: Response) => {
         },
       },
     );
-    res.cookie('access_token', data.access_token);
+    const {
+      data: { email },
+    } = await axios.get('https://api.github.com/user', {
+      headers: {
+        Authorization: `Token ${access_token}`,
+      },
+    });
+    res.cookie('access_token', access_token);
+    res.cookie('user_id', email);
     res.redirect(
       process.env.NODE_ENV === 'development' ? 'http://localhost:3000' : '',
     );
