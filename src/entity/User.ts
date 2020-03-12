@@ -1,6 +1,6 @@
 import {
   Entity,
-  PrimaryGeneratedColumn,
+  PrimaryColumn,
   Column,
   CreateDateColumn,
   UpdateDateColumn,
@@ -8,12 +8,11 @@ import {
 
 @Entity()
 export default class User {
-  @PrimaryGeneratedColumn('uuid')
+  @PrimaryColumn('uuid')
   user_id!: string;
 
   @Column({
     length: 255,
-    unique: true,
   })
   email!: string;
 
@@ -22,6 +21,9 @@ export default class User {
     unique: true,
   })
   username!: string;
+
+  @Column()
+  social!: string;
 
   @Column('timestamp')
   @CreateDateColumn()
