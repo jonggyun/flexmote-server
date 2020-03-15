@@ -1,77 +1,13 @@
 /* eslint-disable @typescript-eslint/camelcase */
-
-import { getRepository } from 'typeorm';
 import { google } from 'googleapis';
 import { Response, Request } from 'express';
 import axios from 'axios';
-import uuid from 'uuid/v1';
 
-import User from '../../entity/User';
+import { getUserId } from '../../common/user';
 
-const createUser = async ({
-  username,
-  email,
-  social,
-}: {
-  username: string;
-  email: string;
-  social: string;
-}) => {
-  try {
-    const user = new User();
-    const userId = uuid();
-
-    user.user_id = userId;
-    user.email = email;
-    user.username = username;
-    user.social = social;
-    user.created_at = new Date();
-
-    await getRepository(User).insert(user);
-    return userId;
-  } catch (error) {
-    console.log('error', error);
-  }
-};
-
-const findUser = async ({
-  email,
-  social,
-}: {
-  email: string;
-  social: string;
-}) => {
-  try {
-    return await getRepository(User).findOne({
-      email: email.trim(),
-      social: social.trim(),
-    });
-  } catch (err) {
-    console.log('error', err);
-  }
-};
-
-const getUserId = async ({
-  username,
-  email,
-  social,
-}: {
-  username: string;
-  email: string;
-  social: string;
-}) => {
-  const existedUser = await findUser({
-    email,
-    social,
-  });
-
-  let userId;
-  if (!existedUser) {
-    userId = await createUser({ username, email, social });
-  } else {
-    userId = existedUser.user_id;
-  }
-  return userId;
+const COOKIE_OPTION = {
+  httpOnly: true,
+  expires: new Date(Date.now() + 60 * 60 * 1000),
 };
 
 export const redirectGoogleLogin = async (req: Request, res: Response) => {
@@ -132,8 +68,8 @@ export const callbackGoogleLogin = async (req: Request, res: Response) => {
 
     const userId = await getUserId({ username, email, social: 'google' });
 
-    res.cookie('access_token', access_token);
-    res.cookie('user_id', userId);
+    res.cookie('access_token', access_token, COOKIE_OPTION);
+    res.cookie('user_id', userId, COOKIE_OPTION);
     res.redirect(
       process.env.NODE_ENV === 'development' ? 'http://localhost:3000' : '',
     );
@@ -171,8 +107,8 @@ export const callbackGithubLogin = async (req: Request, res: Response) => {
 
     const userId = await getUserId({ username, email, social: 'github' });
 
-    res.cookie('access_token', access_token);
-    res.cookie('user_id', userId);
+    res.cookie('access_token', access_token, COOKIE_OPTION);
+    res.cookie('user_id', userId, COOKIE_OPTION);
     res.redirect(
       process.env.NODE_ENV === 'development' ? 'http://localhost:3000' : '',
     );
