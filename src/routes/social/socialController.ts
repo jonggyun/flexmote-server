@@ -5,11 +5,6 @@ import axios from 'axios';
 
 import { getUserId } from '../../common/user';
 
-const COOKIE_OPTION = {
-  httpOnly: true,
-  expires: new Date(Date.now() + 60 * 60 * 1000),
-};
-
 export const redirectGoogleLogin = async (req: Request, res: Response) => {
   try {
     const oauth2Client = new google.auth.OAuth2(
@@ -68,8 +63,13 @@ export const callbackGoogleLogin = async (req: Request, res: Response) => {
 
     const userId = await getUserId({ username, email, social: 'google' });
 
-    res.cookie('access_token', access_token, COOKIE_OPTION);
-    res.cookie('user_id', userId, COOKIE_OPTION);
+    res.cookie('access_token', access_token, {
+      httpOnly: true,
+      expires: new Date(Date.now() + 60 * 60 * 1000),
+    });
+    res.cookie('user_id', userId, {
+      expires: new Date(Date.now() + 60 * 60 * 1000),
+    });
     res.redirect(
       process.env.NODE_ENV === 'development' ? 'http://localhost:3000' : '',
     );
@@ -107,8 +107,13 @@ export const callbackGithubLogin = async (req: Request, res: Response) => {
 
     const userId = await getUserId({ username, email, social: 'github' });
 
-    res.cookie('access_token', access_token, COOKIE_OPTION);
-    res.cookie('user_id', userId, COOKIE_OPTION);
+    res.cookie('access_token', access_token, {
+      httpOnly: true,
+      expires: new Date(Date.now() + 60 * 60 * 1000),
+    });
+    res.cookie('user_id', userId, {
+      expires: new Date(Date.now() + 60 * 60 * 1000),
+    });
     res.redirect(
       process.env.NODE_ENV === 'development' ? 'http://localhost:3000' : '',
     );
