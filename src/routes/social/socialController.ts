@@ -109,10 +109,10 @@ export const callbackGithubLogin = async (req: Request, res: Response) => {
 
     res.cookie('access_token', access_token, {
       httpOnly: true,
-      expires: new Date(Date.now() + 60 * 60 * 1000),
+      expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
     });
     res.cookie('user_id', userId, {
-      expires: new Date(Date.now() + 60 * 60 * 1000),
+      expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
     });
     res.redirect(
       process.env.NODE_ENV === 'development' ? 'http://localhost:3000' : '',
